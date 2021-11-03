@@ -1,14 +1,14 @@
 import React from 'react'
 import { Marker, Popup } from 'react-leaflet';
-
+import '../css/Location.css';
 /**
- * 
+ * Returns a Marker of a Geocache Location
  * @param {String} name
  * @param {String} difficulty
  * @param {String} description
  * @param {String} imagePath
- * @param {Number[]} Position
- * @returns HTML element
+ * @param {Number[]} position
+ * @returns {Marker} Marker
  */
 export default function Location({name, difficulty, description, image, position}) {
     return (

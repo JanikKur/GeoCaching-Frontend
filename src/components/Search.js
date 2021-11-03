@@ -1,9 +1,11 @@
 import {React, useState} from 'react';
 import {BsSearch} from 'react-icons/bs';
 import axios from 'axios';
+import '../css/searchbar.css';
+
 
 /**
- * 
+ * Returns a Search Bar which sets the current Position to the Searched Position
  * @param {Function} setPosition  
  * @returns HTML element 
  */

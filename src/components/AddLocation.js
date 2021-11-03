@@ -1,12 +1,10 @@
 import {React, useState} from 'react';
 import {AiOutlinePlus} from 'react-icons/ai';
 import axios from 'axios';
+import updatePreviewImage from '../helpers/updatePreviewImage';
+import '../css/AddLocationForm.css';
 
-/**
- * 
- * @returns HTML element
- */
-export default function AddLocation({showForm, updateShowForm, newLocationPosition, position}) {
+export default function AddLocation({showForm, updateShowForm, position}) {
     
     const [newLocation, setNewLocation] = useState({
         name: "",
@@ -14,17 +12,29 @@ export default function AddLocation({showForm, updateShowForm, newLocationPositi
         difficulty: "Easy"
     });
 
-    let handleSubmit = event => {
+    let handleSubmit = () => {
         updateShowForm();
+
         let formData = new FormData();
         for(let key in newLocation) {
             formData.append(key, newLocation[key]);
         }
         formData.append('position', `${position[0]} ${position[1]}`);
         formData.append('file', document.querySelector('input[type=file]').files[0]);
-        axios.post('http://localhost:8000/api/addGeoLocation',formData, {headers: {'Content-Type': 'multipart/form-data'}})
-            .then(() => {window.location.reload();})
-            .catch(error => alert(error.message));
+
+
+        axios.post('http://localhost:8000/api/geoLocations',formData, {headers: {'Content-Type': 'multipart/form-data'}})
+            .then(() => {
+                window.location.reload();
+            })
+            .catch(error => {
+                if(error.response.status === 400){
+                    alert("Empty fields!");
+                }
+                else{
+                    alert(error.message);
+                }
+            });
     }
 
     let updateNewLocation = event => {
@@ -36,23 +46,23 @@ export default function AddLocation({showForm, updateShowForm, newLocationPositi
 
     const form = (
             <form id="addForm" onSubmit={handleSubmit} encType='multipart/form-data'>
-                <button id="close" onClick={() => updateShowForm()}>X</button>
+                <button id="close" onClick={updateShowForm}>X</button>
                 <h2>Add a Location</h2>
                 <label>Name:</label>
-                <input type="text" name="name" id="name" value={newLocation.name} onChange={updateNewLocation} placeholder="Name"/>
+                <input type="text" name="name" id="name" value={newLocation.name} onChange={updateNewLocation} placeholder="Name" required/>
                 <label>Difficulty:</label>
-                <select id="difficulty" onChange={updateNewLocation} value={newLocation.difficulty}>
+                <select id="difficulty" onChange={updateNewLocation} value={newLocation.difficulty} required>
                     <option value="Easy">Easy</option>
                     <option value="Normal">Normal</option>
                     <option value="Hard">Hard</option>
                     <option value="Very Hard">Very Hard</option>
                 </select>
                 <label>Description:</label>
-                <input type="text" id="description" onChange={updateNewLocation} value={newLocation.description} placeholder="Description"/>
+                <input type="text" id="description" onChange={updateNewLocation} value={newLocation.description} placeholder="Description" required/>
                 <label>Position:</label>
-                <input type="text" id="position" value={`${position[0]} ${position[1]}`} placeholder="Position" readOnly/>
+                <input type="text" id="position" title="Klick on the Map to set the Position" value={`${position[0]} ${position[1]}`} placeholder="Position" readOnly required/>
                 <label>Image:</label>
-                <img id="preview-image" src="./" onClick={() => document.getElementById("file").click()} alt="Click"/>
+                <img id="preview-image" src="./" onClick={() => document.getElementById("file").click()} alt=""/>
                 <button id="upload-button" onClick={e => {document.getElementById("file").click(); e.preventDefault();}}>Upload Image</button>
                 <input type="file" onChange={updatePreviewImage} id="file"/>
                 <button type="submit" id="submit-button">Add</button>
@@ -67,12 +77,4 @@ export default function AddLocation({showForm, updateShowForm, newLocationPositi
         {showForm && form}
         </>
     )
-}
-
-
-function updatePreviewImage(event){
-    const [file] = document.getElementById("file").files;
-    if (file) {
-        document.getElementById("preview-image").src = URL.createObjectURL(file)
-    }
 }

@@ -1,20 +1,21 @@
-import { useMap } from 'react-leaflet';
+import { useMap, useMapEvents } from 'react-leaflet';
 /**
- * Updates the View of a Leaflet Map
+ * Updates the View of a Leaflet Map by clicking on it
  * @param {Boolean} showForm
  * @returns null
  */
-export default function GetMapPosition({setPosition, showForm}) {  
-    let map = useMap();
-    var lat = 0;
-    var lng = 0;
+export default function GetMapPosition({ setPosition, showForm }) {
+    let lat = 0;
+    let lng = 0;
     if(showForm){
-        map.on('click', function(e){
-            let coord = e.latlng;
-            lat = coord.lat;
-            lng = coord.lng;
-            setPosition([lat, lng]); //Wie kann ich die lat lng nach außen returnen ohne was schlechtes zu machen?
-        });
+        const map = useMapEvents({
+            click: e => {
+                let coord = e.latlng;
+                lat = coord.lat;
+                lng = coord.lng;
+                setPosition([lat, lng]);
+            }
+        }); 
     }
-    return null;
+    return null
 }

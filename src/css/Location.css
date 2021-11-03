@@ -1,0 +1,7 @@
+.difficulty{
+  text-align: right;
+  color: red;
+}
+.description, .difficulty, .name{
+  margin: 0px !important;
+}
