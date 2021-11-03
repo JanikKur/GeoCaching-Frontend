@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import { Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
 import { iconPerson } from '../helpers/positionIcon';
 import '../css/LocationMarker.css';
 
@@ -21,7 +22,7 @@ export default function LocationMarker({setPosition}) {
         const circle = L.circle(e.latlng, radius);
         circle.addTo(map);
       });
-    }, [map]);
+    }, [map,setPosition]);
 
     return homePosition === null ? null : (
       <Marker position={homePosition} icon={iconPerson}>

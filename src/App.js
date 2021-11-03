@@ -42,7 +42,7 @@ export default function App() {
     <Search setPosition={setPosition}/>
     <AddLocation showForm={showForm} updateShowForm={updateShowForm} position={position}/>
     <Map position={position} zoom={6}>
-      <GetMapPosition setPosition={setPosition} showForm={showForm}/>
+      <GetMapPosition setPosition={setPosition}/>
       <LocationMarker setPosition={setPosition}/>
       {locations.map((location, index) => <Location key={index} id={location.id} name={location.name} difficulty={location.difficulty} description={location.description} image={location.image} position={location.position.split(" ")}/>)}
     </Map>
