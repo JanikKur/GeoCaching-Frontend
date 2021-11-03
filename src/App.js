@@ -44,7 +44,7 @@ export default function App() {
     <Map position={position} zoom={6}>
       <GetMapPosition setPosition={setPosition} showForm={showForm}/>
       <LocationMarker setPosition={setPosition}/>
-      {locations.map((location, index) => <Location key={index} name={location.name} difficulty={location.difficulty} description={location.description} image={location.image} position={location.position.split(" ")}/>)}
+      {locations.map((location, index) => <Location key={index} id={location.id} name={location.name} difficulty={location.difficulty} description={location.description} image={location.image} position={location.position.split(" ")}/>)}
     </Map>
     </>
   );
